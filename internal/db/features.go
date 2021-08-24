@@ -53,6 +53,6 @@ func AddFeature(db *sql.DB, ctx context.Context, f *pb.Feature) error {
 }
 
 func UpdateFeature(db *sql.DB, ctx context.Context, id int32, f *pb.Feature) error {
-	_, err := db.ExecContext(ctx, "UPDATE Feature SET feat_type = ? WHERE id = ?", f.Type, id)
+	_, err := db.ExecContext(ctx, "UPDATE Feature SET feat_type = ? WHERE feat_id = ?", f.Type, id)
 	return err
 }
