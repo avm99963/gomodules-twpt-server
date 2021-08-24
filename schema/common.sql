@@ -1,0 +1,8 @@
+CREATE TABLE Feature (
+  feat_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  codename VARCHAR(80) NOT NULL,
+  feat_type SMALLINT NOT NULL,
+
+  PRIMARY KEY (feat_id),
+  UNIQUE KEY (codename)
+);
