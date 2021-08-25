@@ -59,7 +59,14 @@ func (s *killSwitchServiceServer) GetKillSwitchStatus(ctx context.Context, req *
 }
 
 func (s *killSwitchServiceServer) GetKillSwitchOverview(ctx context.Context, req *pb.GetKillSwitchOverviewRequest) (*pb.GetKillSwitchOverviewResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	killSwitches, err := db.ListKillSwitches(s.dbPool, ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.GetKillSwitchOverviewResponse{
+		KillSwitches: killSwitches,
+	}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) SyncFeatures(ctx context.Context, req *pb.SyncFeaturesRequest) (*pb.SyncFeaturesResponse, error) {
@@ -91,38 +98,94 @@ func (s *killSwitchServiceServer) SyncFeatures(ctx context.Context, req *pb.Sync
 }
 
 func (s *killSwitchServiceServer) ListFeatures(ctx context.Context, req *pb.ListFeaturesRequest) (*pb.ListFeaturesResponse, error) {
-  features, err := db.ListFeatures(s.dbPool, ctx, req.WithDeprecatedFeatures)
-  if err != nil {
-    return nil, status.Errorf(codes.Unavailable, err.Error())
-  }
-  res := &pb.ListFeaturesResponse{
-    Features: features,
-  }
-  return res, nil
+	features, err := db.ListFeatures(s.dbPool, ctx, req.WithDeprecatedFeatures)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.ListFeaturesResponse{
+		Features: features,
+	}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) EnableKillSwitch(ctx context.Context, req *pb.EnableKillSwitchRequest) (*pb.EnableKillSwitchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	if req.GetKillSwitch().GetFeature().GetId() == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "feature.id must be set.")
+	}
+
+	err := db.EnableKillSwitch(s.dbPool, ctx, req.KillSwitch)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.EnableKillSwitchResponse{}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) DisableKillSwitch(ctx context.Context, req *pb.DisableKillSwitchRequest) (*pb.DisableKillSwitchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	if req.GetKillSwitchId() == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "kill_switch_id must be set.")
+	}
+
+	err := db.DisableKillSwitch(s.dbPool, ctx, req.KillSwitchId)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.DisableKillSwitchResponse{}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) ListAuthorizedUsers(ctx context.Context, req *pb.ListAuthorizedUsersRequest) (*pb.ListAuthorizedUsersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	users, err := db.ListAuthorizedUsers(s.dbPool, ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.ListAuthorizedUsersResponse{
+		Users: users,
+	}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) AddAuthorizedUser(ctx context.Context, req *pb.AddAuthorizedUserRequest) (*pb.AddAuthorizedUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	if req.GetUser().GetGoogleUid() == "" && req.GetUser().GetEmail() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one of google_uid or email must be set.")
+	}
+
+	err := db.AddAuthorizedUser(s.dbPool, ctx, req.User)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.AddAuthorizedUserResponse{}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) UpdateAuthorizedUser(ctx context.Context, req *pb.UpdateAuthorizedUserRequest) (*pb.UpdateAuthorizedUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	if req.GetUserId() == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "user_id must be greater than 0.")
+	}
+
+	if req.GetUser().GetGoogleUid() == "" && req.GetUser().GetEmail() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "At least one of google_uid or email must be set.")
+	}
+
+	err := db.UpdateAuthorizedUser(s.dbPool, ctx, req.UserId, req.User)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.UpdateAuthorizedUserResponse{}
+	return res, nil
 }
 
 func (s *killSwitchServiceServer) DeleteAuthorizedUser(ctx context.Context, req *pb.DeleteAuthorizedUserRequest) (*pb.DeleteAuthorizedUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Unimplemented method.")
+	if req.GetUserId() == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "user_id must be greater than 0.")
+	}
+
+	err := db.DeleteAuthorizedUser(s.dbPool, ctx, req.UserId)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	res := &pb.DeleteAuthorizedUserResponse{}
+	return res, nil
 }
 
 func main() {

@@ -67,7 +67,7 @@ message ListAuthorizedUsersRequest {
 }
 
 message ListAuthorizedUsersResponse {
-  KillSwitchAuthorizedUser authorized_users = 1;
+  repeated KillSwitchAuthorizedUser users = 1;
 }
 
 message AddAuthorizedUserRequest {

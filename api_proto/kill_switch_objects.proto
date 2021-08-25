@@ -39,8 +39,13 @@ message KillSwitchAuthorizedUser {
 }
 
 message KillSwitchTransformation {
-  KillSwitch kill_switch_from = 1;
-  KillSwitch kill_switch_to = 2;
+  KillSwitch old = 1;
+  KillSwitch new = 2;
+}
+
+message AuthorizedUserTransformation {
+  KillSwitchAuthorizedUser old = 1;
+  KillSwitchAuthorizedUser new = 2;
 }
 
 // Log entry which describes an action which has taken place.
@@ -52,16 +57,31 @@ message KillSwitchAuditLogEntry {
   KillSwitchAuthorizedUser user = 2;
 
   message KillSwitchEnabled {
-    KillSwitchTransformation transformation = 1;
+    KillSwitch kill_switch = 1;
   }
 
   message KillSwitchDisabled {
     KillSwitchTransformation transformation = 1;
   }
 
+  message AuthorizedUserAdded {
+    KillSwitchAuthorizedUser user = 1;
+  }
+
+  message AuthorizedUserUpdated {
+    AuthorizedUserTransformation transformation = 1;
+  }
+
+  message AuthorizedUserDeleted {
+    KillSwitchAuthorizedUser old_user = 1;
+  }
+
   // Description of the action taken
   oneof description {
     KillSwitchEnabled kill_switch_enabled = 3;
     KillSwitchDisabled kill_switch_disabled = 4;
+    AuthorizedUserAdded authorized_user_added = 5;
+    AuthorizedUserUpdated authorized_user_updated = 6;
+    AuthorizedUserDeleted authorized_user_deleted  = 7;
   }
 }
