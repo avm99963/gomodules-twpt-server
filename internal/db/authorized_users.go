@@ -20,7 +20,7 @@ func GetAuthorizedUserById(db *sql.DB, ctx context.Context, id int32) (*pb.KillS
 	return &u, nil
 }
 
-func AddAuthorizedUser(db *sql.DB, ctx context.Context, u *pb.KillSwitchAuthorizedUser) error {
+func AddAuthorizedUser(db *sql.DB, ctx context.Context, u *pb.KillSwitchAuthorizedUser, currentUser *pb.KillSwitchAuthorizedUser) error {
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
@@ -41,6 +41,7 @@ func AddAuthorizedUser(db *sql.DB, ctx context.Context, u *pb.KillSwitchAuthoriz
 	u.Id = int32(id)
 
 	logEntry := &pb.KillSwitchAuditLogEntry{
+		User: currentUser,
 		Description: &pb.KillSwitchAuditLogEntry_AuthorizedUserAdded_{
 			&pb.KillSwitchAuditLogEntry_AuthorizedUserAdded{
 				User: u,
@@ -55,7 +56,7 @@ func AddAuthorizedUser(db *sql.DB, ctx context.Context, u *pb.KillSwitchAuthoriz
 	return tx.Commit()
 }
 
-func UpdateAuthorizedUser(db *sql.DB, ctx context.Context, id int32, newUser *pb.KillSwitchAuthorizedUser) error {
+func UpdateAuthorizedUser(db *sql.DB, ctx context.Context, id int32, newUser *pb.KillSwitchAuthorizedUser, currentUser *pb.KillSwitchAuthorizedUser) error {
 	oldUser, err := GetAuthorizedUserById(db, ctx, id)
 	if err != nil {
 		return err
@@ -77,6 +78,7 @@ func UpdateAuthorizedUser(db *sql.DB, ctx context.Context, id int32, newUser *pb
 	newUser.Id = id
 
 	logEntry := &pb.KillSwitchAuditLogEntry{
+		User: currentUser,
 		Description: &pb.KillSwitchAuditLogEntry_AuthorizedUserUpdated_{
 			&pb.KillSwitchAuditLogEntry_AuthorizedUserUpdated{
 				Transformation: &pb.AuthorizedUserTransformation{
@@ -94,7 +96,7 @@ func UpdateAuthorizedUser(db *sql.DB, ctx context.Context, id int32, newUser *pb
 	return tx.Commit()
 }
 
-func DeleteAuthorizedUser(db *sql.DB, ctx context.Context, id int32) error {
+func DeleteAuthorizedUser(db *sql.DB, ctx context.Context, id int32, currentUser *pb.KillSwitchAuthorizedUser) error {
 	u, err := GetAuthorizedUserById(db, ctx, id)
 	if err != nil {
 		return err
@@ -114,6 +116,7 @@ func DeleteAuthorizedUser(db *sql.DB, ctx context.Context, id int32) error {
 	}
 
 	logEntry := &pb.KillSwitchAuditLogEntry{
+		User: currentUser,
 		Description: &pb.KillSwitchAuditLogEntry_AuthorizedUserDeleted_{
 			&pb.KillSwitchAuditLogEntry_AuthorizedUserDeleted{
 				OldUser: u,

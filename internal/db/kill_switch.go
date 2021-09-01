@@ -91,7 +91,7 @@ func ListKillSwitches(db *sql.DB, ctx context.Context) ([]*pb.KillSwitch, error)
 	return killSwitches, nil
 }
 
-func EnableKillSwitch(db *sql.DB, ctx context.Context, k *pb.KillSwitch) error {
+func EnableKillSwitch(db *sql.DB, ctx context.Context, k *pb.KillSwitch, currentUser *pb.KillSwitchAuthorizedUser) error {
 	if k.MinVersion != "" && !isValidSemVersion(k.MinVersion) {
 		return fmt.Errorf("min_version is not a valid semantic version.")
 	}
@@ -148,6 +148,7 @@ func EnableKillSwitch(db *sql.DB, ctx context.Context, k *pb.KillSwitch) error {
 	}
 
 	logEntry := &pb.KillSwitchAuditLogEntry{
+		User: currentUser,
 		Description: &pb.KillSwitchAuditLogEntry_KillSwitchEnabled_{
 			&pb.KillSwitchAuditLogEntry_KillSwitchEnabled{
 				KillSwitch: k,
@@ -162,7 +163,7 @@ func EnableKillSwitch(db *sql.DB, ctx context.Context, k *pb.KillSwitch) error {
 	return tx.Commit()
 }
 
-func DisableKillSwitch(db *sql.DB, ctx context.Context, id int32) error {
+func DisableKillSwitch(db *sql.DB, ctx context.Context, id int32, currentUser *pb.KillSwitchAuthorizedUser) error {
 	oldKillSwitch, err := GetKillSwitchById(db, ctx, id)
 	if err != nil {
 		return err
@@ -188,6 +189,7 @@ func DisableKillSwitch(db *sql.DB, ctx context.Context, id int32) error {
 	}
 
 	logEntry := &pb.KillSwitchAuditLogEntry{
+		User: currentUser,
 		Description: &pb.KillSwitchAuditLogEntry_KillSwitchDisabled_{
 			&pb.KillSwitchAuditLogEntry_KillSwitchDisabled{
 				Transformation: &pb.KillSwitchTransformation{
