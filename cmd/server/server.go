@@ -89,7 +89,7 @@ func getAuthenticatedUser(s *killSwitchServiceServer, ctx context.Context) (*pb.
 	token := authorization[0]
 	payload, err := s.jwtValidator.Validate(ctx, token, *jwtAudience)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "getAuthenticatedUser: can't parse idtoken")
+		return nil, status.Errorf(codes.Unauthenticated, "getAuthenticatedUser: can't parse or validate idtoken")
 	}
 
 	var authorizedUsers []*pb.KillSwitchAuthorizedUser
@@ -345,7 +345,7 @@ func (s *killSwitchServiceServer) DeleteAuthorizedUser(ctx context.Context, req 
 func main() {
 	flag.Parse()
 
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", *port))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}

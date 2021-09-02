@@ -1,0 +1,43 @@
+@use '@material/theme' with (
+  $primary: #2979FF,
+);
+
+@use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+@use "@material/drawer";
+@use "@material/list";
+@use "@material/elevation/mdc-elevation";
+@use "@material/checkbox";
+@use "@material/data-table/data-table";
+@use "@material/button/styles";
+@use "@material/dialog";
+@use "@material/fab";
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/textfield";
+@use "@material/select/styles" as b-style; // https://github.com/sass/sass/issues/2778#issuecomment-558365532
+
+@include drawer.core-styles;
+@include drawer.dismissible-core-styles;
+@include drawer.modal-core-styles;
+@include list.core-styles;
+@include icon-button.core-styles;
+@include icon-button.core-styles;
+@include data-table.core-styles;
+@include data-table.theme-baseline;
+@include dialog.core-styles;
+@include fab.core-styles;
+@include textfield.core-styles;
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+}

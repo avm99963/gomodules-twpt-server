@@ -1,0 +1,8 @@
+{
+  // Details for the Sign In with Google functionality
+  google: {
+    clientId: '223047594100-ha7istt4csc0mlq11heogk7bqvmpbqo0.apps.googleusercontent.com',
+  },
+  // URL of the GRPC host
+  grpcWebHost: 'http://localhost:8081'
+}
