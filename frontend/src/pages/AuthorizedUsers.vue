@@ -1,4 +1,6 @@
 <script>
+import {mapGetters} from 'vuex';
+
 import NotAuthorized from './NotAuthorized.vue';
 import Page from './utils/Page.vue';
 import AuthorizedUserDialog from '../components/AuthorizedUserDialog.vue';
@@ -14,8 +16,8 @@ export default {
 
     return {
       users: [],
-      currentUpdateUser: emptyUser, // Current user being updated
-      currentDeleteUser: emptyUser, // Current user being confirmed deletion
+      currentUpdateUser: emptyUser.cloneMessage(), // Current user being updated
+      currentDeleteUser: emptyUser.cloneMessage(), // Current user being confirmed deletion
       addDialogOpen: false,
       updateDialogOpen: false,
       deleteDialogOpen: false,
@@ -67,9 +69,9 @@ export default {
     },
   },
   computed: {
-    isSignedIn() {
-      return this.$store.state.jwtToken != null;
-    },
+    ...mapGetters([
+      'isSignedIn',
+    ]),
   },
 };
 </script>

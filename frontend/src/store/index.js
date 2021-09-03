@@ -29,7 +29,12 @@ export const store = createStore({
   },
   actions: {
     connectClient(store, host) {
+      // We enable the dev tools in case they are useful sometime in the future.
+      const enableDevTools = window.__GRPCWEB_DEVTOOLS__ || (() => {});
       store.state.client = new KillSwitchServicePromiseClient(host, null, null);
+      enableDevTools([
+        store.state.client,
+      ]);
     },
   },
 });

@@ -20,6 +20,7 @@
 @use "@material/notched-outline/mdc-notched-outline";
 @use "@material/textfield";
 @use "@material/select/styles" as b-style; // https://github.com/sass/sass/issues/2778#issuecomment-558365532
+@use "@material/form-field";
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
@@ -32,6 +33,8 @@
 @include dialog.core-styles;
 @include fab.core-styles;
 @include textfield.core-styles;
+@include checkbox.core-styles;
+@include form-field.core-styles;
 
 html {
   height: 100%;
