@@ -17,6 +17,8 @@ services:
       dockerfile: ./cmd/server/Dockerfile
     image: twpt-server/golang-server
     entrypoint: ["/sbin/tini", "--", "/server", "--db=root:@tcp(db)/twpt", "--port=10000"]
+    ports:
+      - "10124:10000"
     depends_on:
       - db
     networks:
