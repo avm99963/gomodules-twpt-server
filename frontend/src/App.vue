@@ -1,7 +1,7 @@
 <script>
 import {mapGetters} from 'vuex';
 
-import config from './config.json5';
+import config from './config.js';
 import GsiButton from './GsiButton.vue';
 
 export default {

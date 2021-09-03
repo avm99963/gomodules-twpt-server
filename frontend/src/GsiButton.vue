@@ -1,5 +1,5 @@
 <script>
-import config from './config.json5';
+import config from './config.js';
 
 export default {
   mounted() {

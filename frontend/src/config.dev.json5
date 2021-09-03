@@ -4,5 +4,5 @@
     clientId: '223047594100-ha7istt4csc0mlq11heogk7bqvmpbqo0.apps.googleusercontent.com',
   },
   // URL of the GRPC host
-  grpcWebHost: 'https://twpt-grpc-web.avm99963.com'
+  grpcWebHost: 'http://localhost:8081'
 }

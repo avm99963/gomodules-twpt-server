@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path')
 const json5 = require('json5');
 const {VueLoaderPlugin} = require('vue-loader');
@@ -46,6 +47,9 @@ module.exports = (env, args) => {
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'index.html',
+      }),
+      new webpack.DefinePlugin({
+        'PRODUCTION': args.mode == 'production',
       }),
     ],
     devServer: {

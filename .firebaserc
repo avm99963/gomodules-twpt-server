@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "avm99963-labs"
+  },
+  "targets": {
+    "avm99963-labs": {
+      "hosting": {
+        "twpt-dashboard": [
+          "twpt-dashboard-frontend"
+        ]
+      }
+    }
+  }
+}
