@@ -143,7 +143,7 @@ func (s *killSwitchServiceServer) GetKillSwitchStatus(ctx context.Context, req *
 }
 
 func (s *killSwitchServiceServer) GetKillSwitchOverview(ctx context.Context, req *pb.GetKillSwitchOverviewRequest) (*pb.GetKillSwitchOverviewResponse, error) {
-	killSwitches, err := db.ListKillSwitches(s.dbPool, ctx)
+	killSwitches, err := db.ListKillSwitches(s.dbPool, ctx, req.WithNonactiveKillSwitches)
 	if err != nil {
 		return nil, status.Errorf(codes.Unavailable, err.Error())
 	}

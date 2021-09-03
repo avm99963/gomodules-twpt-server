@@ -28,6 +28,7 @@ message GetKillSwitchStatusResponse {
 }
 
 message GetKillSwitchOverviewRequest {
+  bool with_nonactive_kill_switches = 1;
 }
 
 message GetKillSwitchOverviewResponse {

@@ -63,10 +63,14 @@ func GetKillSwitchById(db *sql.DB, ctx context.Context, id int32) (*pb.KillSwitc
 	return &k, nil
 }
 
-func ListKillSwitches(db *sql.DB, ctx context.Context) ([]*pb.KillSwitch, error) {
+func ListKillSwitches(db *sql.DB, ctx context.Context, withNonactiveKillSwitches bool) ([]*pb.KillSwitch, error) {
 	var rows *sql.Rows
 	var err error
-	rows, err = db.QueryContext(ctx, "SELECT kswitch_id, feat_id, min_version, max_version, active FROM KillSwitch")
+	if withNonactiveKillSwitches {
+		rows, err = db.QueryContext(ctx, "SELECT kswitch_id, feat_id, min_version, max_version, active FROM KillSwitch")
+	} else {
+    rows, err = db.QueryContext(ctx, "SELECT kswitch_id, feat_id, min_version, max_version, active FROM KillSwitch WHERE active <> 0")
+	}
 	if err != nil {
 		return nil, fmt.Errorf("ListKillSwitches: ", err)
 	}

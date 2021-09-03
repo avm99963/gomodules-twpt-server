@@ -802,7 +802,7 @@ proto.GetKillSwitchOverviewRequest.prototype.toObject = function(opt_includeInst
  */
 proto.GetKillSwitchOverviewRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    withNonactiveKillSwitches: jspb.Message.getBooleanFieldWithDefault(msg, 1, false)
   };
 
   if (includeInstance) {
@@ -839,6 +839,10 @@ proto.GetKillSwitchOverviewRequest.deserializeBinaryFromReader = function(msg, r
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setWithNonactiveKillSwitches(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -868,6 +872,31 @@ proto.GetKillSwitchOverviewRequest.prototype.serializeBinary = function() {
  */
 proto.GetKillSwitchOverviewRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getWithNonactiveKillSwitches();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool with_nonactive_kill_switches = 1;
+ * @return {boolean}
+ */
+proto.GetKillSwitchOverviewRequest.prototype.getWithNonactiveKillSwitches = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.GetKillSwitchOverviewRequest} returns this
+ */
+proto.GetKillSwitchOverviewRequest.prototype.setWithNonactiveKillSwitches = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
 };
 
 
