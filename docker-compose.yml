@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  envoy:
+    build:
+      context: ./docker/envoy
+    image: twpt-server/envoy
+    ports:
+      - "10123:8081"
+    depends_on:
+      - server
+    networks:
+      - backend
+  server:
+    build:
+      context: .
+      dockerfile: ./cmd/server/Dockerfile
+    image: twpt-server/golang-server
+    entrypoint: ["/sbin/tini", "--", "/server", "--db=root:@tcp(db)/twpt", "--port=10000"]
+    depends_on:
+      - db
+    networks:
+      - backend
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MARIADB_DATABASE: twpt
+    networks:
+      - backend
+
+networks:
+  backend:
