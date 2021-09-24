@@ -11,6 +11,7 @@ services:
       - server
     networks:
       - backend
+    restart: unless-stopped
   server:
     build:
       context: .
@@ -23,6 +24,7 @@ services:
       - db
     networks:
       - backend
+    restart: unless-stopped
   db:
     image: mariadb
     environment:
@@ -30,6 +32,7 @@ services:
       MARIADB_DATABASE: twpt
     networks:
       - backend
+    restart: unless-stopped
 
 networks:
   backend:
