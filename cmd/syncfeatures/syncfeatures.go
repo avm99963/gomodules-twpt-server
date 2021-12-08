@@ -8,7 +8,10 @@ import (
 	"os"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
+
+	"github.com/johnsiilver/getcert"
 
 	pb "gomodules.avm99963.com/twpt-server/api_proto"
 )
@@ -16,6 +19,7 @@ import (
 var (
 	grpcEndpoint = flag.String("grpcEndpoint", "", "gRPC endpoint address.")
 	jwt          = flag.String("jwt", "", "JWT credentials.")
+	insecure     = flag.Bool("insecure", false, "Set if the connection to the gRPC endpoint is insecure.")
 )
 
 type Features map[string]Feature
@@ -45,7 +49,18 @@ func convertStringTypeToPb(context string) pb.Feature_Type {
 func main() {
 	flag.Parse()
 
-	conn, err := grpc.Dial(*grpcEndpoint, grpc.WithInsecure())
+	var err error
+	var conn *grpc.ClientConn
+
+	if *insecure {
+		conn, err = grpc.Dial(*grpcEndpoint, grpc.WithInsecure())
+	} else {
+		tlsCert, _, err2 := getcert.FromTLSServer(*grpcEndpoint, false)
+		if err2 != nil {
+			log.Fatalf("error while retrieving public certificate: %v\n", err2)
+		}
+		conn, err = grpc.Dial(*grpcEndpoint, grpc.WithTransportCredentials(credentials.NewServerTLSFromCert(&tlsCert)))
+	}
 	if err != nil {
 		log.Fatalf("error while connecting to gRPC endpoint: %v\n", err)
 	}
