@@ -38,6 +38,9 @@ func convertStringTypeToPb(context string) pb.Feature_Type {
 	case "experiment":
 		return pb.Feature_TYPE_EXPERIMENT
 
+	case "internalKillSwitch":
+		return pb.Feature_TYPE_INTERNAL_KILL_SWITCH
+
 	case "deprecated":
 		return pb.Feature_TYPE_DEPRECATED
 
@@ -78,7 +81,7 @@ func main() {
 
 	features := make([]*pb.Feature, 0)
 	for codename, jsonFeature := range jsonFeatures {
-		if jsonFeature.Context == "internal" {
+		if jsonFeature.Context == "internal" && jsonFeature.KillSwitchType != "internalKillSwitch" {
 			continue
 		}
 
