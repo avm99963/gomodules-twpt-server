@@ -13,7 +13,13 @@
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = Function('return this')();
+var global =
+    (typeof globalThis !== 'undefined' && globalThis) ||
+    (typeof window !== 'undefined' && window) ||
+    (typeof global !== 'undefined' && global) ||
+    (typeof self !== 'undefined' && self) ||
+    (function () { return this; }).call(null) ||
+    Function('return this')();
 
 var api_proto_common_pb = require('../api_proto/common_pb.js');
 goog.object.extend(proto, api_proto_common_pb);
@@ -407,6 +413,7 @@ proto.Feature.Type = {
   TYPE_UNKNOWN: 0,
   TYPE_EXPERIMENT: 1,
   TYPE_OPTION: 2,
+  TYPE_INTERNAL_KILL_SWITCH: 3,
   TYPE_DEPRECATED: 10
 };
 
