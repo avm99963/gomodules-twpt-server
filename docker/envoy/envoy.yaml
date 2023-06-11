@@ -28,8 +28,9 @@ static_resources:
                 allow_origin_string_match:
                 - prefix: "https://twpt-dashboard.avm99963.com"
                 - prefix: "https://twpt-dashboard-frontend.web.app"
-                - prefix: "chrome-extension://hpgakoecmgibigdbnljgecablpipbajb"
-                - prefix: "chrome-extension://memmklnkkhifmflmidnflfcdepamljef"
+                - prefix: "chrome-extension://hpgakoecmgibigdbnljgecablpipbajb" # Chrome stable
+                - prefix: "chrome-extension://memmklnkkhifmflmidnflfcdepamljef" # Chrome beta
+                - prefix: "chrome-extension://phefpbdhiknkamngjffpnebaemanmihf" # Chrome canary
                 - prefix: "moz-extension://" # Mozilla extensions use random UUIDs.
                 allow_methods: GET, PUT, DELETE, POST, OPTIONS
                 allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,authorization
