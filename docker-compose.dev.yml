@@ -25,7 +25,7 @@ services:
     networks:
       - backend
   db:
-    image: mariadb
+    image: mariadb@sha256:9da6213d1a5714c4585c9c0003c51510b320d6f60e53d78701fe1e194126249f
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MARIADB_DATABASE: twpt
