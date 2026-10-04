@@ -2,4 +2,4 @@ FROM envoyproxy/envoy:v1.18-latest@sha256:0f1c9e46ce1d07faea29e768e703aef50b4356
 
 COPY envoy.yaml /etc/envoy/envoy.yaml
 
-CMD /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
+CMD /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
